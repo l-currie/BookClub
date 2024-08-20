@@ -21,9 +21,9 @@ const signup = () => {
     error: "",
     code: "",
   });
+  const [showSuccessModal, setShowSuccessModal] = React.useState<boolean>(false);
 
   const disableSignUpButton = !fields.email || !fields.username || !fields.password
-  const showSuccessModal = verification.state === "success";
   const showVerificationModal = verification.state === "pending";
 
   const onSignUpPress = async () => {
@@ -35,6 +35,7 @@ const signup = () => {
       await signUp.create({
         emailAddress: fields.email,
         password: fields.password,
+        username: fields.username
       });
 
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
@@ -60,6 +61,7 @@ const signup = () => {
         //TODO: Create a user in the DB
         await setActive({ session: completeSignUp.createdSessionId });
         setVerification({ ...verification, state: "sucess" });
+        setShowSuccessModal(true)
       } else {
         setVerification({
           ...verification,
@@ -188,7 +190,7 @@ const signup = () => {
             <View className="w-full px-12 mt-8">
               <CustomButton
                 onPress={() => {
-                  router.push("/(auth)/welcome");
+                  router.push("/(tabs)/home");
                 }}
                 text="Continue to Home"
                 color="orange"

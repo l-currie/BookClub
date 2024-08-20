@@ -1,18 +1,42 @@
-import { View, Text, Image, SafeAreaView } from "react-native";
+import { Text, SafeAreaView, Alert } from "react-native";
 import React from "react";
 import InputWithIcon from "@/components/InputWithIcon";
 import icons from "../../constants/icons";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import CustomButton from "@/components/CustomButton";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
+import { useSignIn } from "@clerk/clerk-expo";
 
 const signin = () => {
+  const { signIn, setActive, isLoaded } = useSignIn()
   const [fields, setFields] = React.useState({
     email: "",
     password: "",
   });
 
-  const doSignIn = () => {};
+  const onSignInPress = React.useCallback(async () => {
+    if (!isLoaded) {
+      return
+    }
+
+    try {
+      const signInAttempt = await signIn.create({
+        identifier: fields.email,
+        password: fields.password,
+      })
+
+      if (signInAttempt.status === 'complete') {
+        await setActive({ session: signInAttempt.createdSessionId })
+        router.push('/(tabs)/home')
+      } else {
+        console.error(JSON.stringify(signInAttempt, null, 2))
+        
+      }
+    } catch (err: any) {
+      console.error(JSON.stringify(err, null, 2))
+      Alert.alert("Error signing in", err.errors[0].longMessage)
+    }
+  }, [isLoaded, fields])
 
   return (
     <GestureHandlerRootView>
@@ -46,7 +70,7 @@ const signin = () => {
         />
         <SafeAreaView className="justify-center items-center my-8 w-full">
           <CustomButton
-            onPress={doSignIn}
+            onPress={onSignInPress}
             textStyle="text-[20px] text-white"
             color="orange"
             text="Sign In"
