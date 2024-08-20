@@ -4,5 +4,34 @@ import userBlack from '../assets/icons/userBlack.png'
 import googleColor from '../assets/icons/googleColor.png'
 import checkColor from '../assets/icons/checkColor.png'
 import warningColor from '../assets/icons/warningColor.png'
+import booksColor from '../assets/icons/booksColor.png'
+import booksBlack from '../assets/icons/booksBlack.png'
+import commentColor from '../assets/icons/commentColor.png'
+import commentBlack from '../assets/icons/commentBlack.png'
+import noteColor from '../assets/icons/noteColor.png'
+import noteBlack from '../assets/icons/noteBlack.png'
+import socialColor from '../assets/icons/socialColor.png'
+import socialBlack from '../assets/icons/socialBlack.png'
+import searchColor from '../assets/icons/searchColor.png'
+import searchBlack from '../assets/icons/searchBlack.png'
+import readingColor from '../assets/icons/readingColor.png'
 
-export default {emailBlack, lockBlack, userBlack, googleColor, checkColor, warningColor}
+export default {
+    emailBlack,
+    lockBlack,
+    userBlack,
+    googleColor,
+    checkColor,
+    warningColor,
+    booksColor,
+    booksBlack,
+    commentColor,
+    commentBlack,
+    noteColor,
+    noteBlack,
+    socialColor,
+    socialBlack,
+    searchColor,
+    searchBlack,
+    readingColor,
+}
