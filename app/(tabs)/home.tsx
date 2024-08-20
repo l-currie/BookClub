@@ -1,3 +1,4 @@
+import BookList from "@/components/BookList";
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
 import { Link } from "expo-router";
 import { SafeAreaView, ScrollView, Text, View } from "react-native";
@@ -8,9 +9,12 @@ export default function Page() {
   return (
     <SafeAreaView>
       <SignedIn>
-        <View>
-        <Text>Hello {user?.emailAddresses[0].emailAddress}</Text>
-        </View>
+        <ScrollView className="min-h-full bg-primary">
+          <View className="mt-12">
+          <BookList />
+          </View>
+          
+        </ScrollView>
       </SignedIn>
     </SafeAreaView>
   );
