@@ -3,18 +3,15 @@ import {
     Text,
     Image,
     SafeAreaView,
-    ScrollView,
-    Pressable,
   } from "react-native";
   import React, { useRef, useState } from "react";
   import { GestureHandlerRootView } from "react-native-gesture-handler";
-  import images from "../../constants/images"
   import { router } from "expo-router";
   import Swiper from "react-native-swiper";
   import { welcomeScreen } from "@/constants";
   import CustomButton from "@/components/CustomButton";
   
-  const index = () => {
+  const welcome = () => {
     const swiperRef = useRef<Swiper>(null);
     const [activeCard, setActiveCard] = useState<number>(0);
   
@@ -67,5 +64,5 @@ import {
     );
   };
   
-  export default index;
+  export default welcome;
   

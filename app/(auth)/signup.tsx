@@ -1,4 +1,4 @@
-import { View, Text, Image, SafeAreaView } from "react-native";
+import { View, Text, Image, SafeAreaView, Keyboard, Alert } from "react-native";
 import React from "react";
 import InputWithIcon from "@/components/InputWithIcon";
 import icons from "../../constants/icons";
@@ -22,6 +22,10 @@ const signup = () => {
     code: "",
   });
 
+  const disableSignUpButton = !fields.email || !fields.username || !fields.password
+  const showSuccessModal = verification.state === "success";
+  const showVerificationModal = verification.state === "pending";
+
   const onSignUpPress = async () => {
     if (!isLoaded) {
       return;
@@ -38,6 +42,7 @@ const signup = () => {
       setVerification({ ...verification, state: "pending" });
     } catch (err: any) {
       console.error(JSON.stringify(err, null, 2));
+      Alert.alert('Error', err.errors[0].longMessage)
     }
   };
 
@@ -68,10 +73,9 @@ const signup = () => {
         state: "failed",
         error: err.errors[0].longMessage,
       });
+      Alert.alert('Error', err.errors[0].longMessage)
     }
   };
-  const doSignup = () => {};
-  const doOauthSignUp = () => {};
 
   return (
     <GestureHandlerRootView>
@@ -100,6 +104,7 @@ const signup = () => {
           onChangeText={(text) => {
             setFields({ ...fields, email: text });
           }}
+          keyboardType="email-address"
         />
         <InputWithIcon
           label="Password"
@@ -115,13 +120,15 @@ const signup = () => {
         />
         <SafeAreaView className="justify-center items-center my-8 w-full">
           <CustomButton
-            onPress={doSignup}
+            onPress={onSignUpPress}
             textStyle="text-[20px] text-white"
             color="orange"
             text="Sign Up"
+            disabled={disableSignUpButton}
           />
         </SafeAreaView>
-        <OAuthButton onPress={doOauthSignUp} />
+        {/* TODO: Oauth signup */}
+        <OAuthButton onPress={() => null} /> 
         <Link
           href="/(auth)/signin"
           className="text-lg font-pregular items-center text-center"
@@ -131,14 +138,66 @@ const signup = () => {
             <Text className="text-orange-500">Sign In</Text>
           </Text>
         </Link>
+        <ReactNativeModal isVisible={showVerificationModal}>
+          <View className="bg-primaryLight border-orange-500 border-2 rounded-2xl h-[300px] justify-center items-center">
+            <Text className="font-psemibold text-white text-2xl">
+              Verify Your Email
+            </Text>
+            <Text className="text-neutral-300 font-pregular text-base mt-1">
+              {`We have sent an email with a code to ${fields.email}`}
+            </Text>
+            <View className="mt-2">
+              <InputWithIcon
+                label="Verification Code"
+                placeholder="000000"
+                icon={icons.lockBlack}
+                inputStyle="text-neutral-200"
+                labelStyle="font-orange-500"
+                containerStyle="border-2 border-black rounded-full focus:border-neutral-200"
+                onChangeText={(text) => {
+                  setVerification({ ...verification, code: text });
+                }}
+                keyboardType="numeric"
+              ></InputWithIcon>
+            </View>
+            <View className="w-full px-12 mt-8">
+              <CustomButton
+                onPress={() => {
+                  onPressVerify();
+                }}
+                text="Verify Email"
+                color="orange"
+                textStyle="font-psemibold text-neutral-100 text-xl "
+              ></CustomButton>
+            </View>
+          </View>
+        </ReactNativeModal>
+        <ReactNativeModal isVisible={showSuccessModal}>
+          <View className="bg-primaryLight border-orange-500 border-2 rounded-2xl min-h-[300px] min-w-[300px] justify-center items-center">
+            <Image
+              source={icons.checkColor}
+              className="w-[80px] h-[80px]"
+              resizeMode="contain"
+            ></Image>
+            <Text className="font-psemibold text-white text-2xl mt-8">
+              Success
+            </Text>
+            <Text className="text-neutral-300 font-pregular text-base mt-1">
+              Your email has been Verified
+            </Text>
+            <View className="w-full px-12 mt-8">
+              <CustomButton
+                onPress={() => {
+                  router.push("/(auth)/welcome");
+                }}
+                text="Continue to Home"
+                color="orange"
+                textStyle="font-psemibold text-neutral-100 text-xl"
+              ></CustomButton>
+            </View>
+          </View>
+        </ReactNativeModal>
       </SafeAreaView>
-
-      <ReactNativeModal isVisible={true}>
-        <View className="bg-primaryLight border-orange-500 border-2 rounded-2xl min-h-[300px] min-w-[300px]">
-
-        </View>
-
-      </ReactNativeModal>
     </GestureHandlerRootView>
   );
 };

@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import icons from '../constants/icons'
+import icons from "../constants/icons";
 
 type OAuthButtonProps = {
   onPress: (x?: any) => void;
@@ -15,10 +15,14 @@ const OAuthButton = ({ onPress }: OAuthButtonProps) => (
     <TouchableOpacity
       className={`flex flex-row min-w-full justify-center items-center bg-neutral-200 rounded-full py-1`}
       onPress={onPress}
-      style={{ alignSelf: "flex-start"}}
+      style={{ alignSelf: "flex-start" }}
     >
-        <Image className='w-5 h-5 mx-2'source={icons.googleColor} resizeMode="contain"></Image>
-      <Text className='text-[20px] text-zinc-800'>Sign up with Google</Text>
+      <Image
+        className="w-5 h-5 mx-2"
+        source={icons.googleColor}
+        resizeMode="contain"
+      ></Image>
+      <Text className="text-[20px] text-zinc-800">Sign up with Google</Text>
     </TouchableOpacity>
   </View>
 );

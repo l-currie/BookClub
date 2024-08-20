@@ -30,6 +30,7 @@ const signin = () => {
           onChangeText={(text) => {
             setFields({ ...fields, email: text });
           }}
+          keyboardType="email-address"
         />
         <InputWithIcon
           label="Password"
