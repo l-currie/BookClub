@@ -1,3 +1,4 @@
+import { Book } from "@/types";
 import React, { useCallback, useEffect } from "react";
 import {} from "react";
 
@@ -39,3 +40,18 @@ export const useFetch = <T>(url: string, options: RequestInit) => {
 
   return {data, loading, error, refetch: fetchData}
 };
+
+
+export function mapToBookType(data: any): Book {
+  return {
+    id: data.id,
+    userId: data.userid,
+    title: data.title,
+    author: data.author,
+    numberOfPages: data.numberofpages,
+    currentPage: data.currentpage,
+    startDate: new Date(data.startdate),
+    finishDate: new Date(data.finishdate),
+    currentlyReading: data.currentlyreading
+  } as Book
+}

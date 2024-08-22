@@ -1,11 +1,11 @@
 CREATE TABLE BOOKS (
 id SERIAL PRIMARY KEY,
-userId INT NOT NULL,
-title VARCHAR(256),
-author VARCHAR(256),
-numberOfPages INT,
-currentPage INT,
-startDate DATE DEFAULT CURRENT_DATE,
+userId VARCHAR(50) NOT NULL,
+title VARCHAR(256) NOT NULL,
+author VARCHAR(256) NOT NULL,
+numberOfPages INT NOT NULL,
+currentPage INT NOT NULL,
+startDate DATE DEFAULT CURRENT_DATE NOT NULL,
 finishDate DATE,
-currentlyReading BOOLEAN
+currentlyReading BOOLEAN NOT NULL
 );
