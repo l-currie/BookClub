@@ -55,4 +55,5 @@ Aswell Studio - Flaticon (Email, Lock) https://www.flaticon.com/authors/aswell-s
 Fach - Flaticon  https://www.flaticon.com/authors/fach
 nangicon - Flaticon https://www.flaticon.com/authors/nangicon
 Stickers - Flaticon (Fox) https://www.flaticon.com/authors/stickers
+Freepik - Flaticon https://www.flaticon.com/authors/freepik
 

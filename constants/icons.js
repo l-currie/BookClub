@@ -15,6 +15,8 @@ import socialBlack from '../assets/icons/socialBlack.png'
 import searchColor from '../assets/icons/searchColor.png'
 import searchBlack from '../assets/icons/searchBlack.png'
 import readingColor from '../assets/icons/readingColor.png'
+import cardBookColor from '../assets/icons/cardBookColor.png'
+import calendarBlack from '../assets/icons/calendarBlack.png'
 
 export default {
     emailBlack,
@@ -34,4 +36,6 @@ export default {
     searchColor,
     searchBlack,
     readingColor,
+    cardBookColor,
+    calendarBlack,
 }
