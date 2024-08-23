@@ -50,7 +50,7 @@ const signin = () => {
           icon={icons.emailBlack}
           labelStyle="font-orange-500"
           inputStyle="text-neutral-200"
-          containerStyle="border-2 border-black rounded-full focus:border-neutral-200"
+          containerStyle="border-2 border-black rounded-full focus:border-neutral-200 p-4"
           onChangeText={(text) => {
             setFields({ ...fields, email: text });
           }}
@@ -62,7 +62,7 @@ const signin = () => {
           icon={icons.lockBlack}
           labelStyle="font-orange-500"
           inputStyle="text-neutral-200"
-          containerStyle="border-2 border-black rounded-full focus:border-neutral-200"
+          containerStyle="border-2 border-black rounded-full focus:border-neutral-200 p-4"
           onChangeText={(text) => {
             setFields({ ...fields, password: text });
           }}

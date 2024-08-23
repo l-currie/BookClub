@@ -22,9 +22,11 @@ const signup = () => {
     error: "",
     code: "",
   });
-  const [showSuccessModal, setShowSuccessModal] = React.useState<boolean>(false);
+  const [showSuccessModal, setShowSuccessModal] =
+    React.useState<boolean>(false);
 
-  const disableSignUpButton = !fields.email || !fields.username || !fields.password
+  const disableSignUpButton =
+    !fields.email || !fields.username || !fields.password;
   const showVerificationModal = verification.state === "pending";
 
   const onSignUpPress = async () => {
@@ -36,7 +38,7 @@ const signup = () => {
       await signUp.create({
         emailAddress: fields.email,
         password: fields.password,
-        username: fields.username
+        username: fields.username,
       });
 
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
@@ -44,7 +46,7 @@ const signup = () => {
       setVerification({ ...verification, state: "pending" });
     } catch (err: any) {
       console.error(JSON.stringify(err, null, 2));
-      Alert.alert('Error', err.errors[0].longMessage)
+      Alert.alert("Error", err.errors[0].longMessage);
     }
   };
 
@@ -60,18 +62,18 @@ const signup = () => {
 
       if (completeSignUp.status === "complete") {
         //TODO: Create a user in the DB
-        await fetchAPI('/(api)/user', {
+        await fetchAPI("/(api)/user", {
           method: "POST",
           body: JSON.stringify({
             username: fields.username,
             email: fields.email,
-            clerkId: completeSignUp.createdUserId
-          })
-        })
+            clerkId: completeSignUp.createdUserId,
+          }),
+        });
 
         await setActive({ session: completeSignUp.createdSessionId });
         setVerification({ ...verification, state: "sucess" });
-        setShowSuccessModal(true)
+        setShowSuccessModal(true);
       } else {
         setVerification({
           ...verification,
@@ -85,7 +87,7 @@ const signup = () => {
         state: "failed",
         error: err.errors[0].longMessage,
       });
-      Alert.alert('Error', err.errors[0].longMessage)
+      Alert.alert("Error", err.errors[0].longMessage);
     }
   };
 
@@ -101,7 +103,7 @@ const signup = () => {
           icon={icons.userBlack}
           labelStyle="font-orange-500"
           inputStyle="text-neutral-200"
-          containerStyle="border-2 border-black rounded-full focus:border-neutral-200"
+          containerStyle="border-2 border-black rounded-full focus:border-neutral-200 p-4"
           onChangeText={(text) => {
             setFields({ ...fields, username: text });
           }}
@@ -112,7 +114,7 @@ const signup = () => {
           icon={icons.emailBlack}
           labelStyle="font-orange-500"
           inputStyle="text-neutral-200"
-          containerStyle="border-2 border-black rounded-full focus:border-neutral-200"
+          containerStyle="border-2 border-black rounded-full focus:border-neutral-200 p-4"
           onChangeText={(text) => {
             setFields({ ...fields, email: text });
           }}
@@ -124,7 +126,7 @@ const signup = () => {
           icon={icons.lockBlack}
           labelStyle="font-orange-500"
           inputStyle="text-neutral-200"
-          containerStyle="border-2 border-black rounded-full focus:border-neutral-200"
+          containerStyle="border-2 border-black rounded-full focus:border-neutral-200 p-4"
           onChangeText={(text) => {
             setFields({ ...fields, password: text });
           }}
@@ -140,7 +142,7 @@ const signup = () => {
           />
         </SafeAreaView>
         {/* TODO: Oauth signup */}
-        <OAuthButton onPress={() => null} /> 
+        <OAuthButton onPress={() => null} />
         <Link
           href="/(auth)/signin"
           className="text-lg font-pregular items-center text-center"
@@ -165,12 +167,12 @@ const signup = () => {
                 icon={icons.lockBlack}
                 inputStyle="text-neutral-200"
                 labelStyle="font-orange-500"
-                containerStyle="border-2 border-black rounded-full focus:border-neutral-200"
+                containerStyle="border-2 border-black rounded-full focus:border-neutral-200 p-4"
                 onChangeText={(text) => {
                   setVerification({ ...verification, code: text });
                 }}
                 keyboardType="numeric"
-              ></InputWithIcon>
+              />
             </View>
             <View className="w-full px-12 mt-8">
               <CustomButton

@@ -46,7 +46,7 @@ export default function InputWithIcon({
       >
         <View className="my-1 w-full">
           <Text
-            className={`text-lg font-pmedium mb-3 text-neutral-200 ${labelStyle}`}
+            className={`text-lg font-pmedium mb-1 mt-2 text-neutral-200 ${labelStyle}`}
           >
             {label}
           </Text>
@@ -61,7 +61,7 @@ export default function InputWithIcon({
               ></Image>
             )}
             <TextInput
-              className={`rounded-full p-4 font-pregular text-base flex-1 text-left ${inputStyle}`}
+              className={`rounded-full font-pregular text-base flex-1 text-left ${inputStyle} ml-1`}
               secureTextEntry={hideText}
               onChangeText={onChangeText}
               placeholder={placeholder}

@@ -17,6 +17,10 @@ import searchBlack from '../assets/icons/searchBlack.png'
 import readingColor from '../assets/icons/readingColor.png'
 import cardBookColor from '../assets/icons/cardBookColor.png'
 import calendarBlack from '../assets/icons/calendarBlack.png'
+import bookIconBlack from '../assets/icons/bookIconBlack.png'
+import pagesBlack from '../assets/icons/pagesBlack.png'
+import xBlack from '../assets/icons/xBlack.png'
+
 
 export default {
     emailBlack,
@@ -38,4 +42,7 @@ export default {
     readingColor,
     cardBookColor,
     calendarBlack,
+    bookIconBlack,
+    pagesBlack,
+    xBlack,
 }

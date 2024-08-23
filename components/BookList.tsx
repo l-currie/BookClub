@@ -13,7 +13,6 @@ const BookList = ({ books }: BookListProps) => {
       <View className="w-[calc(100%-1rem)] h-fit mx-2 p-2 ">
         <View className="flex flex-col gap-4">
           {books.map((book) => {
-            console.log(book)
             const progress =
               ((book.currentPage ?? 0) / book.numberOfPages) * 100;
 

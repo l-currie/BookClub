@@ -7,17 +7,11 @@ export async function POST(req: Request) {
     const sql = neon(`${process.env.DATABASE_URL}`);
     const book: Book = await req.json();
 
-    console.log(book);
-
     if (
-      !book.id ||
       !book.title ||
       !book.userId ||
       !book.author ||
-      !book.numberOfPages ||
-      !book.currentPage ||
-      !book.startDate ||
-      !book.currentlyReading
+      !book.numberOfPages
     ) {
       return Response.json(
         { error: "Missing required fields" },
