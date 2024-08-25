@@ -1,7 +1,7 @@
 import BookList from "@/components/BookList";
 import CustomButton from "@/components/CustomButton";
 import { testBooks } from "@/constants";
-import { fetchAPI, mapToBookType } from "@/helpers/helpers";
+import { fetchAPI, fetchUserBooks, mapToBookType } from "@/helpers/helpers";
 import { Book } from "@/types";
 import { SignedIn, useUser } from "@clerk/clerk-expo";
 import icons from "@/constants/icons";
@@ -17,6 +17,8 @@ import {
 import ReactNativeModal from "react-native-modal";
 import InputWithIcon from "@/components/InputWithIcon";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import images from "@/constants/images";
+import { router } from "expo-router";
 
 export default function Page() {
   const { user } = useUser();
@@ -35,38 +37,31 @@ export default function Page() {
     !addBookFields.numberOfPages;
 
   const onAddBook = async () => {
-    await fetchAPI("/(api)/book", {
-      method: "POST",
-      body: JSON.stringify({
-        userId: user?.id,
-        title: addBookFields.title,
-        author: addBookFields.author,
-        numberOfPages: addBookFields.numberOfPages,
-        currentPage: 0,
-        startDate: new Date(),
-        finishDate: null,
-        currentlyReading: true,
-      }),
-    });
-    fetchUserBooks();
+    if(user) {
+      await fetchAPI("/(api)/book", {
+        method: "POST",
+        body: JSON.stringify({
+          userId: user?.id,
+          title: addBookFields.title,
+          author: addBookFields.author,
+          numberOfPages: addBookFields.numberOfPages,
+          currentPage: 0,
+          startDate: new Date(),
+          finishDate: null,
+          currentlyReading: true,
+        }),
+      });
+      fetchUserBooks(user.id, setUserBooks);
+    }
+    
   };
 
   React.useEffect(() => {
     if (user) {
-      fetchUserBooks();
+      fetchUserBooks(user.id, setUserBooks);
     }
   }, [user]);
 
-  const fetchUserBooks = async () => {
-    if (user) {
-      const response = await fetchAPI(`/(api)/books/${user.id}`, {
-        method: "GET",
-      });
-
-      const mappedData = response.data.map((b: any) => mapToBookType(b));
-      setUserBooks(mappedData);
-    }
-  };
 
   const onCloseModal = () => {
     setAddBookFields({
@@ -74,8 +69,12 @@ export default function Page() {
       author: "",
       numberOfPages: 0,
     });
-    setShowAddBookModal(false)
+    setShowAddBookModal(false);
   };
+
+  const onPressBook = (book: Book) => {
+    router.replace(`/(tabs)/(book)/${book.id}`)
+  }
 
   return (
     <GestureHandlerRootView>
@@ -83,7 +82,20 @@ export default function Page() {
         <SignedIn>
           <ScrollView className="min-h-full bg-primary flex-col">
             <View className="mt-12 bg-primaryLight rounded-2xl border-2 border-orange-500">
-              <BookList books={userBooks} />
+              <View className="flex flex-row mt-2 ml-2 items-center">
+                <Image source={images.readingSticker} className="w-12 h-12" />
+                <Text
+                  className=" text-white text-3xl font-pmedium"
+                  style={{
+                    textShadowOffset: { width: 1, height: 1 },
+                    textShadowColor: "#000",
+                    textShadowRadius: 6,
+                  }}
+                >
+                  Currently Reading
+                </Text>
+              </View>
+              <BookList books={userBooks} onPressBook={onPressBook} />
               <View className="my-2 mx-4 rounded-full border-2">
                 <CustomButton
                   onPress={() => {
@@ -95,7 +107,10 @@ export default function Page() {
                 />
               </View>
             </View>
-            <ReactNativeModal isVisible={showAddBookModal} onBackButtonPress={onCloseModal}>
+            <ReactNativeModal
+              isVisible={showAddBookModal}
+              onBackButtonPress={onCloseModal}
+            >
               <View className="bg-primaryLight border-orange-500 border-2 rounded-2xl h-[420px] justify-start p-4">
                 <View className="flex flex-row justify-between">
                   <Text className="font-psemibold text-white text-2xl">

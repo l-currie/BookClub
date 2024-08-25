@@ -45,7 +45,8 @@ export async function GET(req: Request) {
     const response = await sql`
     SELECT * FROM USERS
     WHERE clerkId = ${clerkId}
-    `
+    `;
+
     return new Response(JSON.stringify({ data: response }), { status: 200 });
   } catch (err) {
     console.log(err);

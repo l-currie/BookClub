@@ -38,9 +38,8 @@ export const useFetch = <T>(url: string, options: RequestInit) => {
     fetchData();
   }, [fetchData]);
 
-  return {data, loading, error, refetch: fetchData}
+  return { data, loading, error, refetch: fetchData };
 };
-
 
 export function mapToBookType(data: any): Book {
   return {
@@ -52,6 +51,29 @@ export function mapToBookType(data: any): Book {
     currentPage: data.currentpage,
     startDate: new Date(data.startdate),
     finishDate: new Date(data.finishdate),
-    currentlyReading: data.currentlyreading
-  } as Book
+    currentlyReading: data.currentlyreading,
+  } as Book;
 }
+
+export const fetchUserBooks = async (
+  id: string,
+  setterFunc: (x: Book[]) => void
+) => {
+  const response = await fetchAPI(`/(api)/books/${id}`, {
+    method: "GET",
+  });
+
+  const mappedData = response.data.map((b: any) => mapToBookType(b));
+  setterFunc(mappedData);
+};
+
+export const fetchBook = async (id: string): Promise<Book | undefined> => {
+  try {
+    const response = await fetchAPI(`/(api)/book?id=${id}`, {
+      method: "GET",
+    });
+    return response.data[0] as Book;
+  } catch (err) {
+    console.error("Error fetching book", err);
+  }
+};
