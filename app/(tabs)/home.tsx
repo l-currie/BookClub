@@ -1,4 +1,4 @@
-import BookList from "@/components/BookList";
+import { BookList } from "@/components/BookList";
 import CustomButton from "@/components/CustomButton";
 import { testBooks } from "@/constants";
 import { fetchAPI, fetchUserBooks, mapToBookType } from "@/helpers/helpers";
@@ -37,7 +37,7 @@ export default function Page() {
     !addBookFields.numberOfPages;
 
   const onAddBook = async () => {
-    if(user) {
+    if (user) {
       await fetchAPI("/(api)/book", {
         method: "POST",
         body: JSON.stringify({
@@ -53,7 +53,6 @@ export default function Page() {
       });
       fetchUserBooks(user.id, setUserBooks);
     }
-    
   };
 
   React.useEffect(() => {
@@ -61,7 +60,6 @@ export default function Page() {
       fetchUserBooks(user.id, setUserBooks);
     }
   }, [user]);
-
 
   const onCloseModal = () => {
     setAddBookFields({
@@ -73,8 +71,8 @@ export default function Page() {
   };
 
   const onPressBook = (book: Book) => {
-    router.replace(`/(tabs)/(book)/${book.id}`)
-  }
+    router.push(`/(tabs)/(book)/${book.id}`);
+  };
 
   return (
     <GestureHandlerRootView>
@@ -130,7 +128,7 @@ export default function Page() {
                     placeholder="Lord of The Rings"
                     icon={icons.bookIconBlack}
                     inputStyle="text-neutral-200"
-                    labelStyle="font-orange-500"
+                    labelStyle=""
                     containerStyle="border-2 border-neutral-400 rounded-full focus:border-white p-2"
                     onChangeText={(text) => {
                       setAddBookFields({ ...addBookFields, title: text });
@@ -141,7 +139,7 @@ export default function Page() {
                     placeholder="J. R. R. Tolkien"
                     icon={icons.userBlack}
                     inputStyle="text-neutral-200"
-                    labelStyle="font-orange-500"
+                    labelStyle=""
                     containerStyle="border-2 border-neutral-400 rounded-full focus:border-white p-2"
                     onChangeText={(text) => {
                       setAddBookFields({ ...addBookFields, author: text });
@@ -152,7 +150,7 @@ export default function Page() {
                     placeholder="123"
                     icon={icons.bookIconBlack}
                     inputStyle="text-neutral-200"
-                    labelStyle="font-orange-500"
+                    labelStyle=""
                     containerStyle="border-2 border-neutral-400 rounded-full focus:border-white p-2"
                     onChangeText={(text) => {
                       setAddBookFields({

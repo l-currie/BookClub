@@ -67,12 +67,21 @@ export const fetchUserBooks = async (
   setterFunc(mappedData);
 };
 
-export const fetchBook = async (id: string): Promise<Book | undefined> => {
+export const fetchBook = async (
+  id: number,
+  bookFunc?: (x: Book) => void
+): Promise<Book | undefined> => {
   try {
     const response = await fetchAPI(`/(api)/book?id=${id}`, {
       method: "GET",
     });
-    return response.data[0] as Book;
+
+    const mappedBook: Book = mapToBookType(response.data[0]);
+    if (bookFunc) {
+      bookFunc(mappedBook);
+    } else {
+      return mappedBook;
+    }
   } catch (err) {
     console.error("Error fetching book", err);
   }

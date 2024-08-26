@@ -1,7 +1,6 @@
 import { Book } from "@/types";
 import { neon } from "@neondatabase/serverless";
 import dotenv from "dotenv";
-import { useLocalSearchParams } from "expo-router";
 
 export async function POST(req: Request) {
   try {

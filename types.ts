@@ -9,3 +9,13 @@ export type Book = {
     finishDate?: Date
     currentlyReading: boolean
 }
+
+export type Note = {
+    id: number
+    userId: string,
+    bookId: number,
+    bookTitle: string,
+    creationDate: Date,
+    noteTitle: string,
+    noteText: string,
+}
