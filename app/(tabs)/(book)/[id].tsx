@@ -154,7 +154,7 @@ const bookScreen = () => {
                 <Text className="text-lg font-pmedium mb-1 mt-2 text-neutral-200">
                   Text
                 </Text>
-                  <TextInput className="text-white text-sm font-pregular border-2 border-orange-500 rounded-2xl p-2 items-start"
+                  <TextInput className="text-white text-sm font-pregular border-2 border-orange-500 rounded-2xl p-4 items-start"
                   value={addNoteFields.noteText}
                   onChangeText={(text) => {
                     setAddNoteFields({ ...addNoteFields, noteText: text });
@@ -162,6 +162,7 @@ const bookScreen = () => {
                   numberOfLines={5}
                   maxLength={1000}
                   multiline={true}
+                  textAlignVertical="top"
                 />
               </View>
             </View>
