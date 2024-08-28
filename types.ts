@@ -11,7 +11,7 @@ export type Book = {
 }
 
 export type Note = {
-    id: number
+    id: number,
     userId: string,
     bookId: number,
     bookTitle: string,

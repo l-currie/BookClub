@@ -1,4 +1,4 @@
-import { Book } from "@/types";
+import { Book, Note } from "@/types";
 import React, { useCallback, useEffect } from "react";
 import {} from "react";
 
@@ -55,6 +55,18 @@ export function mapToBookType(data: any): Book {
   } as Book;
 }
 
+export function mapToNoteType(data: any): Note {
+  return {
+    id: data.id,
+    userId: data.userid,
+    bookId: data.bookid,
+    bookTitle: data.booktitle,
+    creationDate: new Date(data.creationdate),
+    noteTitle: data.notetitle,
+    noteText: data.notetext,
+  }
+}
+
 export const fetchUserBooks = async (
   id: string,
   setterFunc: (x: Book[]) => void
@@ -84,5 +96,24 @@ export const fetchBook = async (
     }
   } catch (err) {
     console.error("Error fetching book", err);
+  }
+};
+
+export const fetchBookNotes = async (
+  bookId: number,
+  setterFunc?: (x: Note[]) => void
+) => {
+  console.log('hio')
+  console.log(bookId)
+  const response = await fetchAPI(`/(api)/notes/${bookId}`, {
+    method: "GET"
+  });
+
+  const mappedData = response.data.map((b: any) => mapToNoteType(b));
+
+  if (setterFunc) {
+    setterFunc(mappedData);
+  } else {
+    return mappedData;
   }
 };

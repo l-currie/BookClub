@@ -8,8 +8,13 @@ import {
 } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import React from "react";
-import { Book } from "@/types";
-import { fetchBook, fetchUserBooks } from "@/helpers/helpers";
+import { Book, Note } from "@/types";
+import {
+  fetchAPI,
+  fetchBook,
+  fetchUserBooks,
+  fetchBookNotes,
+} from "@/helpers/helpers";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ReactNativeModal from "react-native-modal";
 import images from "@/constants/images";
@@ -18,33 +23,29 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import icons from "@/constants/icons";
 import { BookList, BookCard } from "@/components/BookList";
 import InputWithIcon from "@/components/InputWithIcon";
+import CustomButton from "@/components/CustomButton";
+import NoteCard from "@/components/NoteCard";
 
 const bookScreen = () => {
   const { user } = useUser();
   const { id } = useLocalSearchParams();
-  const [bookId, setBookId] = React.useState(id);
   const [book, setBook] = React.useState<Book>();
   const [userBooks, setUserBooks] = React.useState<Book[]>([]);
   const [showSelectBookModal, setShowSelectBookModal] = React.useState<boolean>(
     id ? false : true
   );
-  const [showAddNoteModal, setShowAddNoteModal] = React.useState<boolean>(true);
-
+  const [showAddNoteModal, setShowAddNoteModal] =
+    React.useState<boolean>(false);
+  const [bookNotes, setBookNotes] = React.useState<Note[]>([]);
   const [addNoteFields, setAddNoteFields] = React.useState({
     noteTitle: "",
     noteText: "",
   });
 
-  //TODO: Refactor to replace the url with new bookId instead of managing two state when select new book
-  React.useEffect(() => {
-    if (bookId && (!book || +bookId !== book?.id)) {
-      fetchBook(+bookId, setBook);
-    }
-  }, [bookId]);
-
   React.useEffect(() => {
     if (id) {
-      setBookId(id);
+      fetchBook(+id, setBook);
+      fetchBookNotes(+id, setBookNotes);
     }
   }, [id]);
 
@@ -54,10 +55,38 @@ const bookScreen = () => {
     }
   }, [user]);
 
-  const setAndCloseSelectionModal = (book: Book) => {
-    setBook(book);
+  const clearAndCloseAddNoteModal = () => {
+    setAddNoteFields({ noteTitle: "", noteText: "" });
+    setShowAddNoteModal(false);
+  };
+
+  const disableAddNote = !addNoteFields.noteTitle || !addNoteFields.noteText;
+
+  const onPressBook = (book: Book) => {
+    router.navigate(`/(tabs)/(book)/${book.id}`);
     setShowSelectBookModal(false);
   };
+
+  const onAddNote = async () => {
+    if (user && book) {
+      await fetchAPI("/(api)/note", {
+        method: "POST",
+        body: JSON.stringify({
+          userId: user.id,
+          bookId: book.id,
+          bookTitle: book.title,
+          creationDate: new Date(),
+          noteTitle: addNoteFields.noteTitle.trim(),
+          noteText: addNoteFields.noteText,
+        }),
+      });
+
+      await fetchBookNotes(book.id, setBookNotes);
+      clearAndCloseAddNoteModal();
+    }
+  };
+
+  console.log(bookNotes)
 
   return (
     <GestureHandlerRootView>
@@ -72,14 +101,17 @@ const bookScreen = () => {
                 }}
               />
             )}
-          </View>
-          <View className="flex flex-row">
-            <Image
-              source={icons.noteColor}
-              className="w-12 h-12"
-              resizeMode="contain"
-            />
-            <Text className="text-xl text-white">Notes</Text>
+            <View className="flex flex-row mt-4">
+              <Image
+                source={icons.noteColor}
+                className="w-12 h-12"
+                resizeMode="contain"
+              />
+              <Text className="text-xl text-white">Notes</Text>
+            </View>
+            <ScrollView className="flex flex-col gap-4 m-2">
+              {bookNotes.map((note) => (<NoteCard note={note} onPressNote={(x) => null} />))}
+            </ScrollView>
           </View>
         </ScrollView>
         <ReactNativeModal
@@ -107,17 +139,15 @@ const bookScreen = () => {
                 </Text>
               </View>
               <ScrollView className="h-fill flex-1">
-                <BookList
-                  books={userBooks}
-                  onPressBook={setAndCloseSelectionModal}
-                />
+                <BookList books={userBooks} onPressBook={onPressBook} />
               </ScrollView>
             </View>
           </View>
         </ReactNativeModal>
         <ReactNativeModal
           isVisible={showAddNoteModal}
-          onBackButtonPress={() => false}
+          onBackButtonPress={clearAndCloseAddNoteModal}
+          onBackdropPress={clearAndCloseAddNoteModal}
         >
           <View className="bg-primaryLight border-orange-500 border-2 rounded-2xl h-[420px] justify-start">
             <View className="flex flex-col w-full h-full gap-2 px-2">
@@ -154,7 +184,8 @@ const bookScreen = () => {
                 <Text className="text-lg font-pmedium mb-1 mt-2 text-neutral-200">
                   Text
                 </Text>
-                  <TextInput className="text-white text-sm font-pregular border-2 border-orange-500 rounded-2xl p-4 items-start"
+                <TextInput
+                  className="text-white text-sm font-pregular border-2 border-neutral-400 focus:border-white rounded-3xl p-4 items-start"
                   value={addNoteFields.noteText}
                   onChangeText={(text) => {
                     setAddNoteFields({ ...addNoteFields, noteText: text });
@@ -164,6 +195,15 @@ const bookScreen = () => {
                   multiline={true}
                   textAlignVertical="top"
                 />
+                <View className="border-2 mt-4 rounded-full">
+                  <CustomButton
+                    onPress={onAddNote}
+                    text="Add Note"
+                    color="orange"
+                    textStyle="font-psemibold text-neutral-100 text-xl"
+                    disabled={disableAddNote}
+                  />
+                </View>
               </View>
             </View>
           </View>
