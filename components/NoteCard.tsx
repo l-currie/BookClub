@@ -5,18 +5,27 @@ import icons from "@/constants/icons";
 
 type NoteCardProps = {
   note: Note;
-  onPressNote: (x?: Note) => void;
+  onPressNote: (note: Note) => void;
+  onLongPressNote?: (note: Note) => void;
 };
 
-const NoteCard = ({ note, onPressNote }: NoteCardProps) => {
+const NoteCard = ({ note, onPressNote, onLongPressNote }: NoteCardProps) => {
   return (
-    <TouchableOpacity key={note.id} onPress={() => onPressNote(note)}>
-      <View className="flex flex-col justify-between">
-        <View className="flex flex-1 flex-row justify-between">
-          <Text className="text-white text-lg font-psemibold" numberOfLines={1}>
+    <TouchableOpacity
+      key={note.id}
+      onPress={() => onPressNote(note)}
+      onLongPress={() => (onLongPressNote ? onLongPressNote(note) : null)}
+    >
+      <View className="flex flex-col">
+        <View className="flex flex-row justify-between items-center">
+          <Text
+            className="text-white text-lg font-psemibold flex-1"
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
             {note.noteTitle}
           </Text>
-          <View className="flex flex-row">
+          <View className="flex flex-row pl-4">
             <Image
               source={icons.calendarBlack}
               className="w-5 h-5 mr-1"
@@ -27,7 +36,11 @@ const NoteCard = ({ note, onPressNote }: NoteCardProps) => {
             </Text>
           </View>
         </View>
-        <Text className="text-gray-300 text-sm font-pregular" numberOfLines={3} ellipsizeMode="tail">
+        <Text
+          className="text-gray-300 text-sm font-pregular"
+          numberOfLines={3}
+          ellipsizeMode="tail"
+        >
           {note.noteText}
         </Text>
       </View>

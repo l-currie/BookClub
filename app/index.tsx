@@ -9,6 +9,4 @@ export default function AuthRoutesLayout() {
   }
 
   return <Redirect href={'/(auth)/welcome'} />
-
-  return <Stack />
 }

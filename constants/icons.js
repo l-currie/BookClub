@@ -20,6 +20,7 @@ import calendarBlack from '../assets/icons/calendarBlack.png'
 import bookIconBlack from '../assets/icons/bookIconBlack.png'
 import pagesBlack from '../assets/icons/pagesBlack.png'
 import xBlack from '../assets/icons/xBlack.png'
+import editBlack from '../assets/icons/editBlack.png'
 
 
 export default {
@@ -45,4 +46,5 @@ export default {
     bookIconBlack,
     pagesBlack,
     xBlack,
+    editBlack,
 }

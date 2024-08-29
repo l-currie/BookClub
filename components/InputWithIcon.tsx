@@ -24,6 +24,9 @@ type InputWithIconProps = {
   keyboardType?: KeyboardTypeOptions;
   hideText?: boolean;
   icon?: ImageSourcePropType;
+  value?: string;
+  disabled?: boolean;
+  maxLength?: number;
 };
 
 export default function InputWithIcon({
@@ -36,6 +39,9 @@ export default function InputWithIcon({
   containerStyle,
   onChangeText,
   keyboardType,
+  value,
+  disabled,
+  maxLength,
 }: InputWithIconProps) {
   return (
     <KeyboardAvoidingView
@@ -67,7 +73,10 @@ export default function InputWithIcon({
               placeholder={placeholder}
               placeholderTextColor={"#7c7c7c"}
               keyboardType={keyboardType ?? "default"}
-            />
+              value={value}
+              editable={!disabled}
+              maxLength={maxLength}
+              />
           </View>
         </View>
       </TouchableWithoutFeedback>
